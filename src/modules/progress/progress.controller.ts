@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { ProgressService } from './progress.service';
 import { UpdateSkillProgressDto } from 'src/common/dto/update-skill-progress.dto';
+import { ApiTags, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 
 class InitDto {
   userId!: string;
@@ -21,14 +22,18 @@ class UpdateDto {
   status!: string;
 }
 
+@ApiTags('progress')
 @Controller('progress')
 export class ProgressController {
 
-  constructor(private readonly progressService: ProgressService) {}
+  constructor(private readonly progressService: ProgressService) { }
 
   // POST /api/progress/init
   // Called automatically by analysis/run — can also call manually
   @Post('init')
+  @ApiOperation({ summary: 'Initialize progress for a user' })
+  @ApiResponse({ status: 201, description: 'Progress initialized successfully' })
+  @ApiResponse({ status: 400, description: 'Bad Request - invalid input' })
   async init(@Body() body: InitDto) {
     return this.progressService.initializeProgress(
       body.userId,
@@ -41,6 +46,10 @@ export class ProgressController {
   // GET /api/progress/:userId
   // Full progress dashboard
   @Get(':userId')
+  @ApiOperation({ summary: 'Get progress for a user' })
+  @ApiParam({ name: 'userId', description: 'MongoDB user ID' })
+  @ApiResponse({ status: 200, description: 'Progress retrieved successfully' })
+  @ApiResponse({ status: 404, description: 'User not found' })
   async getProgress(@Param('userId') userId: string) {
     return this.progressService.getProgress(userId);
   }
@@ -48,6 +57,11 @@ export class ProgressController {
   // PATCH /api/progress/:userId/skill
   // Update a skill status
   @Patch(':userId/skill')
+  @ApiOperation({ summary: 'Update skill status for a user' })
+  @ApiParam({ name: 'userId', description: 'MongoDB user ID' })
+  @ApiResponse({ status: 200, description: 'Skill status updated successfully' })
+  @ApiResponse({ status: 400, description: 'Bad Request - invalid input' })
+  @ApiResponse({ status: 404, description: 'User not found' })
   async updateSkill(
     @Param('userId') userId: string,
     @Body() body: UpdateSkillProgressDto,

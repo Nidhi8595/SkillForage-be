@@ -6,7 +6,9 @@ import { UsersService } from '../users/users.service';
 import { RolesService } from '../roles/roles.service';
 import { ProgressService } from '../progress/progress.service';
 import { RunAnalysisDto } from '../../common/dto/run-analysis.dto';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 
+@ApiTags('analysis')
 @Controller('analysis')
 export class AnalysisController {
 
@@ -17,9 +19,13 @@ export class AnalysisController {
     private readonly usersService: UsersService,
     private readonly rolesService: RolesService,
     private readonly progressService: ProgressService,
-  ) {}
+  ) { }
 
   @Post('run')
+  @ApiOperation({ summary: 'Run analysis on user resume against target role' })
+  @ApiResponse({ status: 200, description: 'Analysis completed successfully' })
+  @ApiResponse({ status: 400, description: 'Bad Request - invalid input' })
+  @ApiResponse({ status: 404, description: 'User or resume not found' })
   async runAnalysis(@Body() dto: RunAnalysisDto) {
 
     const resume = await this.resumeService.findLatestByUserId(dto.userId);
@@ -39,7 +45,7 @@ export class AnalysisController {
     );
 
     await this.usersService.saveAnalysis(dto.userId, {
-      score:   analysis.score,
+      score: analysis.score,
       matched: analysis.matched,
       missing: analysis.missing,
     });
@@ -53,17 +59,21 @@ export class AnalysisController {
     );
 
     return {
-      userId:          dto.userId,
-      resumeId:        resume._id,
-      targetRole:      dto.targetRole,
+      userId: dto.userId,
+      resumeId: resume._id,
+      targetRole: dto.targetRole,
       servedFromCache: analysis.fromCache,
       analysis,
       roadmap,
-      message:         'Progress tracker initialized. Use GET /api/progress/:userId to view.',
+      message: 'Progress tracker initialized. Use GET /api/progress/:userId to view.',
     };
   }
 
   @Get('explain')
+  @ApiOperation({ summary: 'Explain a target role' })
+  @ApiQuery({ name: 'role', example: 'cardiac surgeon' })
+  @ApiResponse({ status: 200, description: 'Role explanation retrieved successfully' })
+  @ApiResponse({ status: 400, description: 'Bad Request - missing role query parameter' })
   async explainRole(@Query('role') role: string) {
     if (!role) return { error: 'Provide ?role=your role title' };
     return this.rolesService.explainRole(role);
