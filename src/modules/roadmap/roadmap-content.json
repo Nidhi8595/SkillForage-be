@@ -1,0 +1,285 @@
+{
+  "redis": {
+    "description": "In-memory data store used for caching and session management",
+    "days": [
+      {
+        "day": 1,
+        "title": "Redis Fundamentals",
+        "tasks": [
+          "Understand what Redis is and why caching matters",
+          "Install Redis locally using Docker: docker run -d -p 6379:6379 redis",
+          "Learn basic commands: SET, GET, DEL, EXPIRE, TTL"
+        ],
+        "resource": "https://redis.io/docs/getting-started/"
+      },
+      {
+        "day": 2,
+        "title": "Redis Data Structures",
+        "tasks": [
+          "Learn Lists, Sets, Hashes and Sorted Sets",
+          "Build a simple caching layer in Node.js using ioredis",
+          "Implement cache invalidation strategy"
+        ],
+        "resource": "https://redis.io/docs/data-types/"
+      },
+      {
+        "day": 3,
+        "title": "Redis in Production",
+        "tasks": [
+          "Integrate Redis caching into a NestJS API",
+          "Cache database query results with TTL",
+          "Understand cache-aside vs write-through patterns"
+        ],
+        "resource": "https://docs.nestjs.com/techniques/caching"
+      }
+    ]
+  },
+  "docker": {
+    "description": "Platform for containerizing applications for consistent deployment",
+    "days": [
+      {
+        "day": 1,
+        "title": "Docker Basics",
+        "tasks": [
+          "Understand containers vs virtual machines",
+          "Install Docker Desktop",
+          "Run your first container: docker run hello-world",
+          "Learn: docker pull, run, ps, stop, rm"
+        ],
+        "resource": "https://docs.docker.com/get-started/"
+      },
+      {
+        "day": 2,
+        "title": "Building Images",
+        "tasks": [
+          "Write your first Dockerfile for a Node.js app",
+          "Understand layers, COPY, RUN, EXPOSE, CMD",
+          "Build and tag an image: docker build -t myapp .",
+          "Run your containerized app locally"
+        ],
+        "resource": "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/"
+      },
+      {
+        "day": 3,
+        "title": "Docker Compose",
+        "tasks": [
+          "Write a docker-compose.yml for Node + MongoDB",
+          "Use docker-compose up to start multi-container apps",
+          "Understand volumes and environment variables in compose",
+          "Containerize the SkillForge backend"
+        ],
+        "resource": "https://docs.docker.com/compose/"
+      }
+    ]
+  },
+  "kubernetes": {
+    "description": "Container orchestration platform for scaling and managing deployments",
+    "days": [
+      {
+        "day": 1,
+        "title": "Kubernetes Concepts",
+        "tasks": [
+          "Understand why Kubernetes exists (Docker at scale)",
+          "Learn: Pods, Nodes, Clusters, Deployments, Services",
+          "Install kubectl and minikube locally"
+        ],
+        "resource": "https://kubernetes.io/docs/tutorials/kubernetes-basics/"
+      },
+      {
+        "day": 2,
+        "title": "Deploying Apps",
+        "tasks": [
+          "Write a Deployment YAML for a Node.js app",
+          "Apply it: kubectl apply -f deployment.yaml",
+          "Expose it with a Service: kubectl expose deployment"
+        ],
+        "resource": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/"
+      },
+      {
+        "day": 3,
+        "title": "Scaling and Updates",
+        "tasks": [
+          "Scale a deployment: kubectl scale --replicas=3",
+          "Perform a rolling update",
+          "Understand Horizontal Pod Autoscaler"
+        ],
+        "resource": "https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/"
+      }
+    ]
+  },
+  "graphql": {
+    "description": "Query language for APIs as an alternative to REST",
+    "days": [
+      {
+        "day": 1,
+        "title": "GraphQL Fundamentals",
+        "tasks": [
+          "Understand GraphQL vs REST — when to use which",
+          "Learn: Schema, Types, Queries, Mutations, Resolvers",
+          "Explore GraphQL Playground with a public API"
+        ],
+        "resource": "https://graphql.org/learn/"
+      },
+      {
+        "day": 2,
+        "title": "Building a GraphQL API",
+        "tasks": [
+          "Set up Apollo Server with Node.js",
+          "Define a schema with types and resolvers",
+          "Test queries and mutations in Apollo Sandbox"
+        ],
+        "resource": "https://www.apollographql.com/docs/apollo-server/"
+      },
+      {
+        "day": 3,
+        "title": "GraphQL with NestJS",
+        "tasks": [
+          "Install @nestjs/graphql and apollo-server-express",
+          "Create a Module with @Resolver and @Query decorators",
+          "Connect GraphQL resolver to MongoDB via Mongoose"
+        ],
+        "resource": "https://docs.nestjs.com/graphql/quick-start"
+      }
+    ]
+  },
+  "git": {
+    "description": "Version control system for tracking code changes",
+    "days": [
+      {
+        "day": 1,
+        "title": "Git Basics",
+        "tasks": [
+          "Understand version control and why it matters",
+          "Learn: git init, add, commit, status, log",
+          "Create a local repo and make your first commit"
+        ],
+        "resource": "https://git-scm.com/docs/gittutorial"
+      },
+      {
+        "day": 2,
+        "title": "Branching and Merging",
+        "tasks": [
+          "Learn: git branch, checkout, merge",
+          "Understand feature branch workflow",
+          "Resolve your first merge conflict"
+        ],
+        "resource": "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging"
+      },
+      {
+        "day": 3,
+        "title": "Remote Repositories",
+        "tasks": [
+          "Create a GitHub repo and push your project",
+          "Learn: git remote, push, pull, fetch, clone",
+          "Understand pull requests and code review workflow"
+        ],
+        "resource": "https://docs.github.com/en/get-started"
+      }
+    ]
+  },
+  "aws": {
+    "description": "Amazon Web Services — leading cloud platform",
+    "days": [
+      {
+        "day": 1,
+        "title": "AWS Core Concepts",
+        "tasks": [
+          "Understand cloud computing: IaaS, PaaS, SaaS",
+          "Create a free AWS account",
+          "Explore: EC2, S3, RDS, IAM, VPC from the console"
+        ],
+        "resource": "https://aws.amazon.com/getting-started/"
+      },
+      {
+        "day": 2,
+        "title": "Deploy a Node.js App on EC2",
+        "tasks": [
+          "Launch an EC2 t2.micro instance (free tier)",
+          "SSH into the instance and install Node.js",
+          "Deploy a simple Express app and test it"
+        ],
+        "resource": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html"
+      },
+      {
+        "day": 3,
+        "title": "S3 and Environment Best Practices",
+        "tasks": [
+          "Create an S3 bucket and upload files via SDK",
+          "Use IAM roles instead of hardcoded credentials",
+          "Set up environment variables in EC2"
+        ],
+        "resource": "https://docs.aws.amazon.com/s3/index.html"
+      }
+    ]
+  },
+  "typescript": {
+    "description": "Typed superset of JavaScript for safer, scalable code",
+    "days": [
+      {
+        "day": 1,
+        "title": "TypeScript Fundamentals",
+        "tasks": [
+          "Understand why TypeScript exists and what it solves",
+          "Learn: types, interfaces, enums, type aliases",
+          "Convert a simple JavaScript file to TypeScript"
+        ],
+        "resource": "https://www.typescriptlang.org/docs/handbook/intro.html"
+      },
+      {
+        "day": 2,
+        "title": "Advanced Types",
+        "tasks": [
+          "Learn generics, union types, intersection types",
+          "Understand utility types: Partial, Required, Pick, Omit",
+          "Type a REST API response interface"
+        ],
+        "resource": "https://www.typescriptlang.org/docs/handbook/2/types-from-types.html"
+      },
+      {
+        "day": 3,
+        "title": "TypeScript in Node.js",
+        "tasks": [
+          "Set up tsconfig.json for a Node project",
+          "Use TypeScript with Express or NestJS",
+          "Understand declaration files (.d.ts)"
+        ],
+        "resource": "https://www.typescriptlang.org/docs/handbook/typescript-tooling-in-5-minutes.html"
+      }
+    ]
+  },
+  "rest api": {
+    "description": "Architectural style for building web APIs over HTTP",
+    "days": [
+      {
+        "day": 1,
+        "title": "REST Principles",
+        "tasks": [
+          "Learn the 6 REST constraints",
+          "Understand HTTP methods: GET, POST, PUT, PATCH, DELETE",
+          "Study status codes: 200, 201, 400, 401, 403, 404, 500"
+        ],
+        "resource": "https://restfulapi.net/"
+      },
+      {
+        "day": 2,
+        "title": "Designing REST APIs",
+        "tasks": [
+          "Learn resource naming conventions (/users, /users/:id)",
+          "Understand versioning: /api/v1/users",
+          "Design a RESTful API for a blog application"
+        ],
+        "resource": "https://restfulapi.net/resource-naming/"
+      },
+      {
+        "day": 3,
+        "title": "REST API Best Practices",
+        "tasks": [
+          "Implement pagination, filtering, sorting",
+          "Add proper error responses with error codes",
+          "Document your API with Swagger/OpenAPI"
+        ],
+        "resource": "https://swagger.io/specification/"
+      }
+    ]
+  }
+}
