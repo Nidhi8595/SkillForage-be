@@ -38,7 +38,7 @@ export class AnalysisController {
       dto.targetRole,
     );
 
-    const roadmap = this.roadmapService.generateRoadmap(
+    const roadmap = await this.roadmapService.generateRoadmap(
       analysis.missing,
       analysis.missingNiceToHave,
       dto.targetRole,

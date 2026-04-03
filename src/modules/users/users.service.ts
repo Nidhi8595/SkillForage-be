@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, NotFoundException, InternalServerErrorException, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './users.schema';
@@ -8,12 +8,22 @@ export class UsersService {
 
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>
-  ) {}
+  ) { }
 
+  // async create(name: string, email: string): Promise<UserDocument> {
+  //   const user = new this.userModel({ name, email });
+  //   return user.save();
+  // }
   async create(name: string, email: string): Promise<UserDocument> {
-    const user = new this.userModel({ name, email });
-    return user.save();
+  const existing = await this.userModel.findOne({ email }).exec();
+
+  if (existing) {
+    throw new BadRequestException('User already exists. Please login.');
   }
+
+  const user = new this.userModel({ name, email });
+  return user.save();
+}
 
   async findById(id: string): Promise<UserDocument> {
     const user = await this.userModel.findById(id).exec();
@@ -38,7 +48,7 @@ export class UsersService {
     id: string,
     analysis: { score: number; matched: string[]; missing: string[] }
   ): Promise<UserDocument> {
-    
+
     const updated = await this.userModel.findByIdAndUpdate(
       id,
       {
@@ -57,4 +67,19 @@ export class UsersService {
 
     return updated; // TypeScript now knows this is UserDocument, not null
   }
+
+  // Find existing user by email — for login
+  async login(email: string): Promise<UserDocument> {
+  const user = await this.userModel
+    .findOne({ email: email.toLowerCase().trim() })
+    .exec();
+
+  if (!user) {
+    throw new NotFoundException(
+      'No account found. Please sign up first.'
+    );
+  }
+
+  return user;
+}
 }
