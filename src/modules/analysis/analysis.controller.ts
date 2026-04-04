@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Query } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query ,Param} from '@nestjs/common';
 import { AnalysisService } from './analysis.service';
 import { ResumeService } from '../resume/resume.service';
 import { RoadmapService } from '../roadmap/roadmap.service';
@@ -48,6 +48,7 @@ export class AnalysisController {
       score: analysis.score,
       matched: analysis.matched,
       missing: analysis.missing,
+      targetRole: dto.targetRole,
     });
 
     // Auto-initialize progress tracker with missing skills
@@ -78,4 +79,25 @@ export class AnalysisController {
     if (!role) return { error: 'Provide ?role=your role title' };
     return this.rolesService.explainRole(role);
   }
+
+  // GET /api/analysis/heatmap/:userId
+@Get('heatmap/:userId')
+async getHeatmap(@Param('userId') userId: string) {
+  const resume = await this.resumeService.findLatestByUserId(userId);
+  const s      = await this.usersService.findById(userId);
+
+  if (!resume || !s.latestAnalysis) {
+    return { heatmap: [] };
+  }
+
+  const matched  = s.latestAnalysis.matched  ?? [];
+  const missing  = s.latestAnalysis.missing  ?? [];
+
+  const heatmap = [
+    ...matched.map(skill => ({ skill, strength: 'strong',  value: 100 })),
+    ...missing.map(skill => ({ skill, strength: 'missing', value: 0   })),
+  ];
+
+  return { heatmap, score: s.latestAnalysis.score };
+}
 }

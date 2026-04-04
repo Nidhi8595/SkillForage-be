@@ -10,10 +10,6 @@ export class UsersService {
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>
   ) { }
 
-  // async create(name: string, email: string): Promise<UserDocument> {
-  //   const user = new this.userModel({ name, email });
-  //   return user.save();
-  // }
   async create(name: string, email: string): Promise<UserDocument> {
   const existing = await this.userModel.findOne({ email }).exec();
 
@@ -44,29 +40,69 @@ export class UsersService {
   }
 
   // ✅ THE FIX IS HERE
-  async saveAnalysis(
-    id: string,
-    analysis: { score: number; matched: string[]; missing: string[] }
-  ): Promise<UserDocument> {
+  // async saveAnalysis(
+  //   id: string,
+  //   analysis: { score: number; matched: string[]; missing: string[] }
+  // ): Promise<UserDocument> {
 
-    const updated = await this.userModel.findByIdAndUpdate(
-      id,
-      {
+  //   const updated = await this.userModel.findByIdAndUpdate(
+  //     id,
+  //     {
+  //       latestAnalysis: {
+  //         ...analysis,
+  //         analyzedAt: new Date(),
+  //       },
+  //     },
+  //     { new: true }
+  //   ).exec();
+
+  //   // Explicitly handle the null case
+  //   if (!updated) {
+  //     throw new NotFoundException(`User with ID ${id} not found`);
+  //   }
+
+  //   return updated; // TypeScript now knows this is UserDocument, not null
+  // }
+  async saveAnalysis(
+  id: string,
+  analysis: { score: number; matched: string[]; missing: string[]; targetRole?: string }
+): Promise<UserDocument> {
+  const now = new Date();
+
+  const updated = await this.userModel.findByIdAndUpdate(
+    id,
+    {
+      $set: {
         latestAnalysis: {
-          ...analysis,
-          analyzedAt: new Date(),
+          score:      analysis.score,
+          matched:    analysis.matched,
+          missing:    analysis.missing,
+          analyzedAt: now,
         },
       },
-      { new: true }
-    ).exec();
+      // Append to history array — $push adds without overwriting
+      $push: {
+        scoreHistory: {
+          score:      analysis.score,
+          targetRole: analysis.targetRole ?? 'unknown',
+          analyzedAt: now,
+        },
+      },
+    },
+    { new: true }
+  ).exec();
 
-    // Explicitly handle the null case
-    if (!updated) {
-      throw new NotFoundException(`User with ID ${id} not found`);
-    }
-
-    return updated; // TypeScript now knows this is UserDocument, not null
+  if (!updated) {
+    throw new NotFoundException(`User ${id} not found`);
   }
+  return updated;
+}
+
+// NEW — return score history for chart
+async getScoreHistory(id: string): Promise<any[]> {
+  const user = await this.findById(id);
+  return user.scoreHistory ?? [];
+}
 
   // Find existing user by email — for login
   async login(email: string): Promise<UserDocument> {

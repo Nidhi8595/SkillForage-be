@@ -9,24 +9,38 @@ export type UserDocument = User & Document;
 export class User {
 
     @Prop({ required: true })
-    name: string;
+    name!: string;
 
     @Prop({ required: true, unique: true, lowercase: true, trim: true })
-    email: string;
+    email!: string;
 
     @Prop()
-    targetRole: string; // e.g., "backend developer"
+    targetRole!: string; // e.g., "backend developer"
 
     @Prop({ type: [String], default: [] })
-    uploadedResumes: string[]; // stores filenames or paths
+    uploadedResumes!: string[]; // stores filenames or paths
 
     @Prop({ type: Object })
-    latestAnalysis: {
+    latestAnalysis!: {
         score: number;
         matched: string[];
         missing: string[];
         analyzedAt: Date;
     };
+
+     @Prop({
+    type: [{
+      score:      Number,
+      targetRole: String,
+      analyzedAt: Date,
+    }],
+    default: [],
+  })
+  scoreHistory!: {
+    score:      number;
+    targetRole: string;
+    analyzedAt: Date;
+  }[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

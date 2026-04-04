@@ -49,4 +49,9 @@ export class UsersController {
   ) {
     return this.usersService.updateTargetRole(id, role);
   }
+
+  @Get(':id/history')
+  async getHistory(@Param('id') id: string) {
+    return this.usersService.getScoreHistory(id);
+  }
 }
